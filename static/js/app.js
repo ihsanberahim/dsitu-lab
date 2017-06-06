@@ -63,17 +63,26 @@ var app = new Vue({
  },
  mounted: function()
  {
-  var app_url = this.$route.query.app;
+  var app_url = (this.$route.query.app||'');
+  var platforms = (this.$route.query.platforms||'');
 
-  if(!app_url || (app_url && app_url.indexOf('http')===-1))
+  if(app_url && app_url.indexOf('http')===-1)
   {
   }else
   {
    this.app_url = app_url;
   }
 
-  this.showing_android = JSON.parse(localStorage.getItem('showing_android'));
-  this.showing_iphone = JSON.parse(localStorage.getItem('showing_iphone'));
-  this.showing_windows = JSON.parse(localStorage.getItem('showing_windows'));
+  if(platforms=='')
+  {
+   this.showing_android = JSON.parse(localStorage.getItem('showing_android'));
+   this.showing_iphone = JSON.parse(localStorage.getItem('showing_iphone'));
+   this.showing_windows = JSON.parse(localStorage.getItem('showing_windows'));
+  }else
+  {
+   this.showing_android = (platforms.indexOf('android')!==-1);
+   this.showing_iphone = (platforms.indexOf('iphone')!==-1);
+   this.showing_windows = (platforms.indexOf('windows')!==-1);
+  }
  }
 });
