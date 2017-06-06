@@ -1,4 +1,4 @@
-(function() {
+jQuery(document).ready(function($) {
 
  $('#live-chat header').on('click', function() {
 
@@ -14,4 +14,4 @@
 
  });
 
-}) ();
+});

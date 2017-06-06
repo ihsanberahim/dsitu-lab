@@ -4,6 +4,16 @@ Vue.config.ignoredElements = [
  'preview',
 ];
 
+Vue.component('modal', {
+ template: '#modal-template',
+ data: function()
+ {
+  return {
+   app_url: ''
+  };
+ }
+});
+
 var router = new VueRouter({
  mode: 'history',
  routes: []
@@ -19,6 +29,15 @@ var app = new Vue({
   showing_windows: false,
  },
  methods: {
+  setAppUrl: function(val)
+  {
+   router.push({ query: { app: val }});
+   this.app_url = val;
+  },
+  isValidAppUrl: function()
+  {
+   return (this.app_url.indexOf('http')!==-1);
+  },
   getAppUrl: function(platform)
   {
    if(!this['showing_'+platform]) return '';
@@ -40,33 +59,21 @@ var app = new Vue({
    localStorage.setItem('showing_android', this.showing_android);
    localStorage.setItem('showing_iphone', this.showing_iphone);
    localStorage.setItem('showing_windows', this.showing_windows);
-   console.log('devicesChanged');
   }
  },
  mounted: function()
  {
-  console.log('Prepare.. mounted');
-
   var app_url = this.$route.query.app;
-  // var exmaple_app_url = 'http://indiebooks.dsitu.com';
-  var exmaple_app_url = '';
 
   if(!app_url || (app_url && app_url.indexOf('http')===-1))
   {
-   router.push({ query: { app: exmaple_app_url }});
-
-   app_url = exmaple_app_url;
+  }else
+  {
+   this.app_url = app_url;
   }
 
-  this.app_url = app_url;
   this.showing_android = JSON.parse(localStorage.getItem('showing_android'));
   this.showing_iphone = JSON.parse(localStorage.getItem('showing_iphone'));
   this.showing_windows = JSON.parse(localStorage.getItem('showing_windows'));
-
-  console.log({
-   showing_android: this.showing_android,
-   showing_iphone: this.showing_iphone,
-   showing_windows: this.showing_windows,
-  });
  }
 });

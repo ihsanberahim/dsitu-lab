@@ -9,6 +9,7 @@
   </head>
   <body>
     <div id="root">
+     <modal v-if="!isValidAppUrl()" @close="val => { setAppUrl(val) }"></modal>
      <div id="app">
        <div id="header">
          <div id="header-left">
@@ -100,13 +101,45 @@
          </div>
        </div>
      </div>
-    </div>
+    </div><!-- end: #root -->
+    <!-- template for the modal component -->
+    <script type="text/x-template" id="modal-template">
+      <transition name="modal">
+        <div class="modal-mask">
+          <div class="modal-wrapper">
+            <div class="modal-container">
+
+              <div class="modal-header">
+                <slot name="header">
+                </slot>
+              </div>
+
+              <div class="modal-body">
+                <slot name="body">
+                 <p>Provide your app address
+                 </p>
+                 <input v-model="app_url" placeholder="http://your.app.address">
+                </slot>
+              </div>
+
+              <div class="modal-footer">
+                <slot name="footer">
+                  <button class="modal-default-button" @click="$emit('close', app_url)">OK
+                  </button>
+                </slot>
+              </div>
+            </div>
+          </div>
+        </div>
+      </transition>
+    </script>
+
     <script src="https://cdn.jsdelivr.net/vue/latest/vue.js"></script>
     <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
     <script src="static/js/app.js"></script>
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
     <script src="static/js/chat.js"></script>
-
     <div id="live-chat">
     		<header class="clearfix">
     			<a href="#" class="chat-close">x</a>
